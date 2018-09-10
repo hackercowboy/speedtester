@@ -1,0 +1,15 @@
+{
+  "name": "speedtester",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node speedtester.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cron": "^1.3.0",    
+    "kue": "^0.11.6",
+    "speedtest-net": "^1.4.2"
+  }
+}
