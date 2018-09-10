@@ -6,7 +6,7 @@ const axios = require('axios');
 const queue = kue.createQueue();
 
 queue.process('persist', (job, done) => {
-  const deviceName = process.env.DEVICE_NAME;
+  const deviceName = process.env.SPEEDTESTER_NETWORK_NAME;
   const measurements = [
     {
       key: `speedtest.${deviceName}.ping`,
@@ -25,7 +25,7 @@ queue.process('persist', (job, done) => {
     },
   ];
 
-  axios.post(process.env.API_ENDPOINT, measurements)
+  axios.post(process.env.SPEEDTESTER_API_ENDPOINT, measurements)
     .then(() => {
       done();
     })
