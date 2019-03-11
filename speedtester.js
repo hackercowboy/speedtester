@@ -48,8 +48,8 @@ const runSpeedTest = () => {
     const results = {
       timestamp: time,
       ping: data.server.ping,
-      download: data.speeds.originalDownload,
-      upload: data.speeds.originalUpload,
+      download: parseInt(data.speeds.download * 1000),
+      upload: parseInt(data.speeds.upload * 1000),
     };
     console.log(data);
     storeMeasurements(results);
