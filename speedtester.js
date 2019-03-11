@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const CronJob = require('cron').CronJob;
 const SpeedTest = require('speedtest-net');
 const kue = require('kue');
@@ -9,17 +11,17 @@ queue.process('persist', (job, done) => {
   const deviceName = process.env.SPEEDTESTER_NETWORK_NAME;
   const measurements = [
     {
-      key: `speedtest.${deviceName}.ping`,
+      key: `speedtest_${deviceName}_ping`,
       timestamp: job.data.timestamp,
       value: job.data.ping,
     },
     {
-      key: `speedtest.${deviceName}.download`,
+      key: `speedtest_${deviceName}_download`,
       timestamp: job.data.timestamp,
       value: job.data.download,
     },
     {
-      key: `speedtest.${deviceName}.upload`,
+      key: `speedtest_${deviceName}_upload`,
       timestamp: job.data.timestamp,
       value: job.data.upload,
     },
@@ -40,16 +42,16 @@ const storeMeasurements = (results) => {
 };
 
 const runSpeedTest = () => {
-  const speedTest = SpeedTest({ maxTime: 8000, proxy: process.env.PROXY });
+  const speedTest = SpeedTest({ maxTime: 8000, proxy: process.env.PROXY, serverId: process.env.SPEEDTESTER_SERVER_ID });
   const time = new Date();
   speedTest.on('data', (data) => {
     const results = {
       timestamp: time,
       ping: data.server.ping,
-      download: data.speeds.download,
-      upload: data.speeds.upload,
+      download: data.speeds.originalDownload,
+      upload: data.speeds.originalUpload,
     };
-    console.log(results);
+    console.log(data);
     storeMeasurements(results);
   });
 
